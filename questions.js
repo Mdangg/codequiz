@@ -29,3 +29,44 @@ var questions = [
         answer: "false"
     },
 ]; 
+
+var alotted = 75000;
+var timer;
+var score = 0;
+
+function buildQuiz () {
+    setTimeout(function(){
+        alert("Hello"); }, 75000);
+    var quiz = [ ];
+    var answers = [ ];
+    for (i = 0; i < questions.length; i++)
+    {
+        answers = [];
+        for (j = 0; j < questions[i].choices.length; j ++) 
+        
+        {
+            answers.push('<input type="radio">' + questions[i].choices[j] + '<input>');
+        }
+            quiz.push(
+                '<div class="question">' + questions[i].title + '</div>' + '<div class="answers">' + answers.join(' ') + '</div>'
+                );
+
+
+    }
+    document.getElementById("quiz").innerHTML = quiz.join("");
+}
+
+ // Start Quiz -- onclick hide elements and show questions
+
+    // timeinterval decrease 
+
+    // store and increment scores in localstorage
+
+    // endgame on timer 0  
+
+    // create an event listener on button
+
+    document.querySelector("button").addEventListener("click", function(){
+        let h1Tag = document.querySelector("h1");
+        h1Tag.style.display = 'none';
+    })
