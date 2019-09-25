@@ -32,11 +32,16 @@ var questions = [
 
 var allotted = 75000;
 var timer;
-var score = 0;
+var score = 75000;
+var quiz = [];
+var startTime;
 
 function buildQuiz () {
-    setTimeout(function(){
-        alert("Hello"); }, 75000);
+    clearTimeout(timer);
+	timer = setTimeout("calculateScore()", allotted);
+
+	goNext(0);
+
     
     var quiz = [ ];
     var answers = [ ];
@@ -56,9 +61,10 @@ function buildQuiz () {
     }
     document.getElementById("quiz").innerHTML = quiz.join("");
 }
-
+var startTime;
 function goNext (qnum) {
-    questionTimer = setTimeout("calculateScore()", 15000);
+    questionTimer = setTimeout("answerQuestion("+qnum+",'time_ran_out')", 15000);
+    startTime = (new Date()).getTime();
     var quiz = [];
     var answers = [];
     document.getElementById("quiz").innerHTML = " ";
@@ -67,24 +73,43 @@ function goNext (qnum) {
         answers.push('<label><input type="radio" name= "grouping" onchange="answerQuestion('+qnum+', \''+questions[qnum].choices[j]+'\')">' + questions[qnum].choices[j] + '</label><br>');
        }
        quiz.push(
-        '<div class="question">' + questions[i].title + '</div>' + '<div class="answers">' + answers.join(' ') + '</div>'
+        '<div class="question">' + questions[qnum].title + '</div>' + '<div class="answers">' + answers.join(' ') + '</div>'
         );
         document.getElementById("quiz").innerHTML = quiz.join("");
 }
 
-function answerQuestion(qnum, choice) {
-    console.log(qnum);
-    console.log(choice);
-    if (questions[qnum].answer !== choice) {
-
-    }
-    qnum = qnum + 1;
-    goNext(qnum);
+function answerQuestion(qnum, choice) 
+{
+	var timespent = Math.abs((new Date()).getTime() - startTime);
+	if (questions[qnum].answer == choice)
+	{
+		score -= timespent;
+	}
+	else 
+	{
+		score -= 15000;
+	}
+	console.log("time spent" + timespent);
+	console.log("current score" + score);
+	qnum += 1;
+	clearTimeout(questionTimer);
+	if (qnum != questions.length)
+	{
+		goNext(qnum);
+	}
+	else
+	{
+		calculateScore();
+	}
+	
 }
 
-// function calculateScore( ) {
-//     console.log(calculateScore);
-// }
+function calculateScore()
+{
+	var endscore = Math.abs(score/1000);
+	score = 0;
+	alert('END SCORE: ' + endscore);
+}
 
     document.querySelector("button").addEventListener("click", function(){
         let h1Tag = document.querySelector("h1");
